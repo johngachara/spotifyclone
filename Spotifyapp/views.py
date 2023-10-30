@@ -4,8 +4,8 @@ from django.http import HttpResponse
 import requests
 import base64
 
-client_id = '2ee2d0c4a9494a7c8f3df35ca82b0087'
-client_secret = '68d6e1fa37a24e07bf5b525e4bb11492'
+client_id = '2ee2d0c4a9494a7c8f3df35ca82b009k087'
+client_secret = '68d6e1fa37a24e07bf5b525e4bb1ko01492'
 
 
 def index(request):
