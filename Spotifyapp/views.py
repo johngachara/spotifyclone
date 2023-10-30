@@ -1,9 +1,7 @@
-import json
+
 from django.shortcuts import redirect, render
-from django.http import HttpResponse
 import requests
 import base64
-
 client_id = '2ee2d0c4a9494a7c8f3df35ca82b0087'
 client_secret = '68d6e1fa37a24e07bf5b525e4bb11492'
 
@@ -44,13 +42,13 @@ def refresh_token(request):
             # Update the stored access token
             request.session['access_token'] = access_token
 
-    return redirect('redirectt')  # Redirect to your existing view
+    return redirect('redirectt')
 
 
 def redirectt(request):
     code = request.GET.get('code')
     if not code:
-        print(code)
+        print('wrong code')
     auth_str = f'{client_id}:{client_secret}'
     auth_bytes = base64.b64encode(auth_str.encode('utf-8')).decode('utf-8')
     data = {
@@ -107,4 +105,4 @@ def redirectt(request):
 
 
 
-# ... Your other views and code
+
