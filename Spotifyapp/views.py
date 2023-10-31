@@ -10,7 +10,7 @@ def index(request):
     URL = 'https://accounts.spotify.com/authorize'
     response_type = 'code'
     redurl = 'http://127.0.0.1:8000/red'
-    scope = 'user-read-private user-read-email user-modify-playback-state user-library-read user-read-playback-state user-read-recently-played'
+    scope = 'playlist-read-private user-read-private user-read-email user-modify-playback-state user-library-read user-read-playback-state user-read-recently-played'
     state = "state"
     spotify_url = f"{URL}?response_type={response_type}&client_id={client_id}&scope={scope}&redirect_uri={redurl}&state={state}"
     return redirect(spotify_url)
@@ -76,33 +76,38 @@ def redirectt(request):
 
     recenturls = 'https://api.spotify.com/v1/me/player/recently-played'
     params = {
-        "limit": 15
+        "limit": 20
     }
     access_token = request.session.get('access_token')
     headers2 = {
         "Authorization": "Bearer " + access_token
     }
     res2 = requests.get(recenturls, headers=headers2, params=params).json()
-    songs = res2['items'][0]['track']['album']['images'][0]['url']
-    name = res2['items'][0]['track']['album']['name']
-    songs2 = res2['items'][1]['track']['album']['images'][0]['url']
-    name2 = res2['items'][1]['track']['album']['name']
-    songs3 = res2['items'][2]['track']['album']['images'][0]['url']
-    name3 = res2['items'][2]['track']['album']['name']
-    songs4 = res2['items'][3]['track']['album']['images'][0]['url']
-    name4 = res2['items'][3]['track']['album']['name']
-    songs5 = res2['items'][4]['track']['album']['images'][0]['url']
-    name5 = res2['items'][4]['track']['album']['name']
-    songs6 = res2['items'][5]['track']['album']['images'][0]['url']
-    name6 = res2['items'][5]['track']['album']['name']
-    songs7 = res2['items'][6]['track']['album']['images'][0]['url']
-    name7 = res2['items'][6]['track']['album']['name']
-    songs8 = res2['items'][7]['track']['album']['images'][0]['url']
-    name8 = res2['items'][7]['track']['album']['name']
-    songs9 = res2['items'][8]['track']['album']['images'][0]['url']
-    name9 = res2['items'][8]['track']['album']['name']
-    return render(request, 'red.html', {"image": songs, "name": name,"image2": songs2, "name2": name2,"image3": songs3, "name3": name3,"image4": songs4, "name4": name4,"image5": songs5, "name5": name5,"image6": songs6, "name6": name6,"image7": songs7, "name7": name7,"image8": songs8, "name8": name8,"image9": songs9, "name9": name9})
+    songs_info = []
 
+    for item in res2.get('items',[]):
+        track = item.get('track','')
+        album = track.get('album','')
+        image = album.get('images','')[0]
+        url = image.get('url','')
+        name = track.get('name','')
+        playedat = item.get('played_at')
+        songs_info.append({"image":url,"name":name,"playedat":playedat})
+    return render(request, 'red.html', {"data":songs_info})
+def savedpage(request):
+    playlisturl = 'https://api.spotify.com/v1/me/playlists'
+    access_token = request.session.get('access_token')
+    headers = {
+        "Authorization":f"Bearer {access_token}"
+    }
+    response = requests.get(playlisturl,headers=headers).json()
+    items = response.get('items',[])
+    saved_items = []
+    for item in items:
+        descr = item.get('description','')
+        name = item.get('name','')
+        pic = item.get('images', [{}])[0].get('url', '')
+        saved_items.append({"name":name,"descr":descr,"pic":pic})
 
-
+    return render(request,'saved.html',{"data":saved_items})
 
