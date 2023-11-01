@@ -2,8 +2,8 @@
 from django.shortcuts import redirect, render
 import requests
 import base64
-client_id = '2ee2d0c4a9494a7c8f3dfdssd35ca82b0087'
-client_secret = '68d6e1fa37a24e07bf5b525e4bfdsddab11492'
+client_id = '1fd1b686693d4568a6905422d631ea10'
+client_secret = 'a746a404e72a43a2b41272da3a64ed21'
 
 
 def index(request):
@@ -91,9 +91,8 @@ def redirectt(request):
         image = album.get('images','')[0]
         url = image.get('url','')
         name = track.get('name','')
-        playedat = item.get('played_at')
-        songs_info.append({"image":url,"name":name,"playedat":playedat})
-    return render(request, 'red.html', {"data":songs_info})
+        songs_info.append({"image":url,"name":name,})
+    return render(request, 'red.html', {"data":songs_info,"access_token":access_token})
 def savedpage(request):
     playlisturl = 'https://api.spotify.com/v1/me/playlists'
     access_token = request.session.get('access_token')
@@ -108,6 +107,5 @@ def savedpage(request):
         name = item.get('name','')
         pic = item.get('images', [{}])[0].get('url', '')
         saved_items.append({"name":name,"descr":descr,"pic":pic})
-
     return render(request,'saved.html',{"data":saved_items})
 

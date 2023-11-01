@@ -25,7 +25,9 @@ html, body {
   display: grid;
   grid-gap: 1rem;
   padding: 1rem;
-  max-width: 1024px;
+  max-width: 100%;
+    height: 1200px;
+    color: whitesmoke;
   margin: 0 auto;
   font-family: var(--font-sans);
 }
@@ -216,10 +218,10 @@ html, body {
 </div>
 <main class="page-content">
     {% for item in data %}
-    <div class="card">
+    <div class="card" style="color: whitesmoke">
         <div class="content">
             <h2 class="title">{{item.name}}</h2>
-            <p class="copy">{{ item.descr }}</p>
+            <p class="copy"> </p>
             <button class="btn">View</button>
         </div>
     </div>
