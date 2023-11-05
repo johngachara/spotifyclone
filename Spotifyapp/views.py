@@ -1,4 +1,3 @@
-
 from django.shortcuts import redirect, render
 import requests
 import base64
@@ -10,7 +9,7 @@ def index(request):
     URL = 'https://accounts.spotify.com/authorize'
     response_type = 'code'
     redurl = 'http://127.0.0.1:8000/red'
-    scope = 'playlist-read-private user-read-private user-read-email user-modify-playback-state user-library-read user-read-playback-state user-read-recently-played'
+    scope = 'playlist-read-private user-read-private user-read-email user-modify-playback-state user-library-read user-read-playback-state user-read-recently-played streaming'
     state = "state"
     spotify_url = f"{URL}?response_type={response_type}&client_id={client_id}&scope={scope}&redirect_uri={redurl}&state={state}"
     return redirect(spotify_url)
@@ -76,7 +75,7 @@ def redirectt(request):
 
     recenturls = 'https://api.spotify.com/v1/me/player/recently-played'
     params = {
-        "limit": 20
+        "limit": 6
     }
     access_token = request.session.get('access_token')
     headers2 = {
@@ -84,14 +83,20 @@ def redirectt(request):
     }
     res2 = requests.get(recenturls, headers=headers2, params=params).json()
     songs_info = []
-
+    artist_info = []
     for item in res2.get('items',[]):
         track = item.get('track','')
         album = track.get('album','')
         image = album.get('images','')[0]
         url = image.get('url','')
         name = track.get('name','')
-        songs_info.append({"image":url,"name":name,})
+        artists = track.get('artists','')[0]
+        artist_name = artists.get('name','')
+        spotifyuri = artists.get('uri','')
+        artistid = artists['id']
+        timez = item.get('played_at','')
+        artist_info.append(artistid)
+        songs_info.append({"image":url,"name":name,"artist_name":artist_name,"time":timez,"uri":spotifyuri})
     return render(request, 'red.html', {"data":songs_info,"access_token":access_token})
 def savedpage(request):
     playlisturl = 'https://api.spotify.com/v1/me/playlists'
@@ -108,4 +113,13 @@ def savedpage(request):
         pic = item.get('images', [{}])[0].get('url', '')
         saved_items.append({"name":name,"descr":descr,"pic":pic})
     return render(request,'saved.html',{"data":saved_items})
+def albumpage(request):
+    access_token = request.session.get('access_token')
+    albumurl = 'https://api.spotify.com/v1/artists'
+    headers = {
+        "Authorization":f"Bearer {access_token}"
+    }
+    ans = requests.get(albumurl,params={"id":ids},headers=headers).json()
+    followers = ans.get('name','')
+    return render(request,'savedalbum.html',{"f":followers})
 
