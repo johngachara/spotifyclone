@@ -1,7 +1,10 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 import requests
 import base64
+
+from django.urls import reverse
+
 client_id = '1fd1b686693d4568a6905422d631ea10'
 client_secret = 'a746a404e72a43a2b41272da3a64ed21'
 
@@ -47,8 +50,6 @@ def refresh_token(request):
 
 def redirectt(request):
     code = request.GET.get('code')
-    if not code:
-        print('wrong code')
     auth_str = f'{client_id}:{client_secret}'
     auth_bytes = base64.b64encode(auth_str.encode('utf-8')).decode('utf-8')
     data = {
@@ -93,7 +94,7 @@ def redirectt(request):
         name = track.get('name','')
         artists = track.get('artists','')[0]
         artist_name = artists.get('name','')
-        spotifyuri = artists.get('uri','')
+        spotifyuri = album.get('uri','')
         artistid = artists['id']
         timez = item.get('played_at','')
         artist_info.append(artistid)
@@ -145,5 +146,8 @@ def play_song(request,uri):
         "Authorization": f"Bearer {access_token}"
     }
     response = requests.put(play_url,json=params,headers=headers)
-    return HttpResponse(response)
+    if response:
+        redirect_url = reverse('redi')
+        return HttpResponseRedirect(redirect_url)
+
 
