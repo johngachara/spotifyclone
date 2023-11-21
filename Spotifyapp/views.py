@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 import requests
 import base64
@@ -75,7 +76,7 @@ def redirectt(request):
 
     recenturls = 'https://api.spotify.com/v1/me/player/recently-played'
     params = {
-        "limit": 6
+        "limit": 20
     }
     access_token = request.session.get('access_token')
     headers2 = {
@@ -97,7 +98,21 @@ def redirectt(request):
         timez = item.get('played_at','')
         artist_info.append(artistid)
         songs_info.append({"image":url,"name":name,"artist_name":artist_name,"time":timez,"uri":spotifyuri})
-    return render(request, 'red.html', {"data":songs_info,"access_token":access_token})
+    featuredurl = 'https://api.spotify.com/v1/browse/featured-playlists'
+    params2 = {"country":"","locale":"","timestamp":"","limit":20}
+    featuredlist = []
+    response2 = requests.get(featuredurl,params2,headers=headers2).json()
+    actualresponse = response2.get('playlists','')
+    for song in response2.get('playlists',''):
+        playlist = song.get('items','')[0]
+        songname = playlist.get('name','')
+        imageurl = song.get('images',{[]})[0]
+        actualurl = imageurl.get('url','')
+        featuredlist.append({"songname":songname,"imageurl":actualurl})
+
+    return render(request, 'red.html', {"data":songs_info,
+                                        "access_token":access_token,
+                                        "featured":featuredlist})
 def savedpage(request):
     playlisturl = 'https://api.spotify.com/v1/me/playlists'
     access_token = request.session.get('access_token')
@@ -122,4 +137,13 @@ def albumpage(request):
     ans = requests.get(albumurl,params={"id":ids},headers=headers).json()
     followers = ans.get('name','')
     return render(request,'savedalbum.html',{"f":followers})
+def play_song(request,uri):
+    play_url = 'https://api.spotify.com/v1/me/player/play'
+    params = {"context_uri":uri,"device_id":""}
+    access_token = request.session.get('access_token')
+    headers = {
+        "Authorization": f"Bearer {access_token}"
+    }
+    response = requests.put(play_url,json=params,headers=headers)
+    return HttpResponse(response)
 

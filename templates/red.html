@@ -1,209 +1,432 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Spotify Clone</title>
     <meta charset="UTF-8">
-    <script src="https://kit.fontawesome.com/18aa13a732.js" crossorigin="anonymous"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-</head>
-<body>
-<div class="container">
-    <header class="d-flex justify-content-center py-3">
-      <ul class="nav nav-pills">
-        <li class="nav-item"><a class="nav-link active" aria-current="page">Home</a></li>
-        <li class="nav-item"><a href="#" id="playbackButton" class="nav-link"><i class="fa-solid fa-play fa-beat"></i></a></li>
-        <li class="nav-item"><a href="#"  class="nav-link"><i class="fa-solid fa-backward fa-beat"></i></a></li>
-        <li class="nav-item"><a href="#" id= "pauseButton" class="nav-link"><i class="fa-solid fa-pause fa-beat"></i></a></li>
-      </ul>
-    </header>
-  </div>
-<script src="https://sdk.scdn.co/spotify-player.js"></script>
-<script>
-  window.onSpotifyWebPlaybackSDKReady = () => {
-    const token = '{{ access_token }}';
-    const player = new Spotify.Player({
-      name: 'Spotify Clone',
-      getOAuthToken: cb => { cb(token); }
-    });
+    <title>Title</title>
+    <style>
+        * {
+  box-sizing: border-box;
+}
 
-    player.connect().then(success => {
-      if (success) {
-        console.log('The Web Playback SDK successfully connected to Spotify!');
-      }
-    });
+::-webkit-scrollbar {
+  /* Webkit */
+  width: 0;
+  height: 0;
+}
 
-    player.addListener('ready', ({ device_id }) => {
-      console.log('The Web Playback SDK is ready to play music!');
-      console.log('Device ID', device_id);
-    });
-
-    document.getElementById('playbackButton').addEventListener('click', () => {
-      player.togglePlay().then(() => {
-        console.log('Toggled playback!');
-      });
-    });
-
-    document.getElementById('pauseButton').addEventListener('click', () => {
-      player.pause().then(() => {
-        console.log('Paused!');
-      });
-    });
+.hs {
+  display: flex;
+  overflow-x: scroll;
+  justify-content: space-between;
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE 10+ */
+  -webkit-overflow-scrolling: touch;
+  margin: 0 -20px;
+}
+.hs__header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.hs__headline {
+  flex: 1;
+}
+.hs__arrows {
+  align-self: center;
+}
+.hs__arrows .arrow:before {
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  content: "";
+  background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNSIgaGVpZ2h0PSI5IiB2aWV3Qm94PSIwIDAgMTUgOSI+Cgk8cGF0aCBmaWxsPSIjMzMzMzMzIiBkPSJNNy44NjcgOC41NzRsLTcuMjItNy4yMi43MDctLjcwOEw3Ljg2NyA3LjE2IDE0LjA1Ljk4bC43MDYuNzA3Ii8+Cjwvc3ZnPgo=");
+  background-size: contain;
+  filter: brightness(5);
+  width: 18px;
+  height: 12px;
+  cursor: pointer;
+}
+.hs__arrows .arrow.disabled:before {
+  filter: brightness(2);
+}
+.hs__arrows .arrow.arrow-prev:before {
+  transform: rotate(90deg);
+  margin-right: 10px;
+}
+.hs__arrows .arrow.arrow-next:before {
+  transform: rotate(-90deg);
+}
+.hs__item {
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: calc(100% / 4 - (10px * 2) - (20px / 4));
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+@media only screen and (max-width: 990px) {
+  .hs__item {
+    flex-basis: calc(100% / 3 - (10px * 2) - (20px / 3));
   }
-</script>
+}
+.hs__item:last-child:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 10px;
+  height: 1px;
+  right: calc(10px * 2 * -1);
+}
+.hs__item:first-child {
+  margin-left: calc(10px * 2);
+}
+.hs__item__description {
+  z-index: 1;
+  align-self: flex-start;
+  margin: 10px 0;
+}
+.hs__item__subtitle {
+  color: #aaa;
+  display: block;
+}
+.hs__item__image__wrapper {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 100%;
+}
+.hs__item__image {
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+@media only screen and (min-width: 990px) {
+  .hs__wrapper {
+    overflow: hidden;
+  }
+}
+@media (hover: none) and (pointer: coarse) {
+  .hs__wrapper .hs__arrows {
+    display: none;
+  }
+  .hs__wrapper .hs__item {
+    flex: 1 0 calc(23% - 10px * 2);
+  }
+}
+@media only screen and (hover: none) and (pointer: coarse) and (max-width: 990px) {
+  .hs__wrapper .hs__item {
+    flex: 1 0 calc(45% - 10px * 2);
+  }
+}
 
- <div class="container px-4 py-5" id="custom-cards">
-    <h2 class="pb-2 border-bottom">Recent Tracks</h2>
-    <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
-        {% for item in data %}
-      <div class="col">
-        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('{{ item.image }}');">
-          <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-            <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">{{ item.name }}</h3>
-            <ul class="d-flex list-unstyled mt-auto">
-              <li class="d-flex align-items-center me-3">
-                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#geo-fill"/></svg>
-                <small>{{ item.artist_name }}</small>
-              </li>
-              <li class="d-flex align-items-center">
-                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"/></svg>
-                <small>{{ item.time }}</small>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-        {% endfor %}
-    </div>
- </div>
- <div class="container px-4 py-5" id="custom-cards">
-    <h2 class="pb-2 border-bottom">Custom cards</h2>
+/* Base Styling */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: "Muli", sans-serif;
+  color: white;
+  background: white;
+  line-height: 1.5;
+  letter-spacing: 0.15px;
+}
 
-    <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
-      <div class="col">
-        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('unsplash-photo-1.jpg');">
-          <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-            <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Short title, long jacket</h3>
-            <ul class="d-flex list-unstyled mt-auto">
-              <li class="me-auto">
-                <img src="https://github.com/twbs.png" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white">
-              </li>
-              <li class="d-flex align-items-center me-3">
-                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#geo-fill"/></svg>
-                <small>Earth</small>
-              </li>
-              <li class="d-flex align-items-center">
-                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"/></svg>
-                <small>3d</small>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
- </div>
- <div class="container px-4 py-5" id="custom-cards">
-    <h2 class="pb-2 border-bottom">Custom cards</h2>
+.container {
+  max-width: 990px;
+  padding: calc(10px * 2);
+  margin: 0 auto;
+  background: #121212;
+  mix-blend-mode: invert;
+  position: relative;
+}
+.container:after {
+  content: "";
+  width: 100vw;
+  height: 100%;
+  background: #212121;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  z-index: -1;
+}
+@media only screen and (min-width: 990px) {
+  .container {
+    padding: calc(10px * 4) calc(10px * 8);
+  }
+}
 
-    <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
-      <div class="col">
-        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('unsplash-photo-1.jpg');">
-          <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-            <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Short title, long jacket</h3>
-            <ul class="d-flex list-unstyled mt-auto">
-              <li class="me-auto">
-                <img src="https://github.com/twbs.png" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white">
-              </li>
-              <li class="d-flex align-items-center me-3">
-                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#geo-fill"/></svg>
-                <small>Earth</small>
-              </li>
-              <li class="d-flex align-items-center">
-                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"/></svg>
-                <small>3d</small>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
- </div>
- <div class="container px-4 py-5" id="custom-cards">
-    <h2 class="pb-2 border-bottom">Custom cards</h2>
+.description {
+  max-width: 990px;
+  color: #212121;
+  margin: 0 auto;
+  padding: calc(10px * 4);
+}
 
-    <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
-      <div class="col">
-        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('unsplash-photo-1.jpg');">
-          <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-            <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Short title, long jacket</h3>
-            <ul class="d-flex list-unstyled mt-auto">
-              <li class="me-auto">
-                <img src="https://github.com/twbs.png" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white">
-              </li>
-              <li class="d-flex align-items-center me-3">
-                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#geo-fill"/></svg>
-                <small>Earth</small>
-              </li>
-              <li class="d-flex align-items-center">
-                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"/></svg>
-                <small>3d</small>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
- </div>
- <div class="container px-4 py-5" id="custom-cards">
-    <h2 class="pb-2 border-bottom">Custom cards</h2>
+ul {
+  padding: 0;
+  margin: 0;
+}
+    </style>
 
-    <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
-      <div class="col">
-        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('unsplash-photo-1.jpg');">
-          <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-            <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Short title, long jacket</h3>
-            <ul class="d-flex list-unstyled mt-auto">
-              <li class="me-auto">
-                <img src="https://github.com/twbs.png" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white">
-              </li>
-              <li class="d-flex align-items-center me-3">
-                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#geo-fill"/></svg>
-                <small>Earth</small>
-              </li>
-              <li class="d-flex align-items-center">
-                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"/></svg>
-                <small>3d</small>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
- </div>
- <div class="container px-4 py-5" id="custom-cards">
-    <h2 class="pb-2 border-bottom">Custom cards</h2>
 
-    <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
-      <div class="col">
-        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('unsplash-photo-1.jpg');">
-          <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-            <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Short title, long jacket</h3>
-            <ul class="d-flex list-unstyled mt-auto">
-              <li class="me-auto">
-                <img src="https://github.com/twbs.png" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white">
-              </li>
-              <li class="d-flex align-items-center me-3">
-                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#geo-fill"/></svg>
-                <small>Earth</small>
-              </li>
-              <li class="d-flex align-items-center">
-                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"/></svg>
-                <small>3d</small>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+ <script
+  src="https://code.jquery.com/jquery-3.7.1.js"
+  integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+  crossorigin="anonymous"></script>
+
+    <!-- Your jQuery script -->
+    <script>
+        $(document).ready(function () {
+            var instance = $(".hs__wrapper");
+            $.each(instance, function (key, value) {
+
+                var arrows = $(instance[key]).find(".arrow"),
+                    prevArrow = arrows.filter('.arrow-prev'),
+                    nextArrow = arrows.filter('.arrow-next'),
+                    box = $(instance[key]).find(".hs"),
+                    x = 0,
+                    mx = 0,
+                    maxScrollWidth = box[0].scrollWidth - (box[0].clientWidth / 2) - (box.width() / 2);
+
+                $(arrows).on('click', function () {
+
+                    if ($(this).hasClass("arrow-next")) {
+                        x = ((box.width() / 2)) + box.scrollLeft() - 10;
+                        box.animate({
+                            scrollLeft: x,
+                        });
+                    } else {
+                        x = ((box.width() / 2)) - box.scrollLeft() - 10;
+                        box.animate({
+                            scrollLeft: -x,
+                        });
+                    }
+
+                });
+
+                $(box).on({
+                    mousemove: function (e) {
+                        var mx2 = e.pageX - this.offsetLeft;
+                        if (mx) this.scrollLeft = this.sx + mx - mx2;
+                    },
+                    mousedown: function (e) {
+                        this.sx = this.scrollLeft;
+                        mx = e.pageX - this.offsetLeft;
+                    },
+                    scroll: function () {
+                        toggleArrows();
+                    }
+                });
+
+                $(document).on("mouseup", function () {
+                    mx = 0;
+                });
+
+                function toggleArrows() {
+                    if (box.scrollLeft() > maxScrollWidth - 10) {
+                        // disable next button when the right end has reached
+                        nextArrow.addClass('disabled');
+                    } else if (box.scrollLeft() < 10) {
+                        // disable prev button when the left end has reached
+                        prevArrow.addClass('disabled');
+                    } else {
+                        // both are enabled
+                        nextArrow.removeClass('disabled');
+                        prevArrow.removeClass('disabled');
+                    }
+                }
+
+            });
+        });
+    </script>
+
+</head>
+
+
+<div class="container">
+  <div class="hs__wrapper">
+    <div class="hs__header">
+      <h2 class="hs__headline">Recent Tracks
+      </h2>
+      <div class="hs__arrows"><a class="arrow disabled arrow-prev"></a><a class="arrow arrow-next"></a></div>
     </div>
- </div>
-</body>
+    <ul class="hs">
+        {% for i in data %}
+      <li class="hs__item">
+        <div class="hs__item__image__wrapper">
+          <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="{{ i.image }}" alt=""/>
+        </div>
+        <div class="hs__item__description"><span class="hs__item__title">{{ i.name }}</span><span class="hs__item__subtitle">{{ i.artist_name }}</span></div>
+        <a href="{% url 'play' i.uri %}" type="button">Play</a>
+      {% endfor %}
+      </li>
+    </ul>
+  </div>
+  <div class="hs__wrapper">
+    <div class="hs__header">
+      <h2 class="hs__headline">Featured tracks
+      </h2>
+      <div class="hs__arrows"><a class="arrow disabled arrow-prev"></a><a class="arrow arrow-next"></a></div>
+    </div>
+    <ul class="hs">
+        {% for x in featured %}
+      <li class="hs__item">
+        <div class="hs__item__image__wrapper">
+          <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="{{ x.image_url }}" alt=""/>
+        </div>
+        <div class="hs__item__description"><span class="hs__item__title">Amazing title0</span><span class="hs__item__subtitle">{{ x.songname }}</span></div>
+          {% endfor %}
+      </li>
+    </ul>
+  </div>
+  <div class="hs__wrapper">
+    <div class="hs__header">
+      <h2 class="hs__headline">Headline3
+      </h2>
+      <div class="hs__arrows"><a class="arrow disabled arrow-prev"></a><a class="arrow arrow-next"></a></div>
+    </div>
+    <ul class="hs">
+      <li class="hs__item">
+        <div class="hs__item__image__wrapper">
+          <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="https://picsum.photos/id/104/300/300" alt=""/>
+        </div>
+        <div class="hs__item__description"><span class="hs__item__title">Amazing title0</span><span class="hs__item__subtitle">some subtitle</span></div>
+      </li>
+      <li class="hs__item">
+        <div class="hs__item__image__wrapper">
+          <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="https://picsum.photos/id/114/300/300" alt=""/>
+        </div>
+        <div class="hs__item__description"><span class="hs__item__title">Amazing title1</span><span class="hs__item__subtitle">some subtitle</span></div>
+      </li>
+      <li class="hs__item">
+        <div class="hs__item__image__wrapper">
+          <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="https://picsum.photos/id/124/300/300" alt=""/>
+        </div>
+        <div class="hs__item__description"><span class="hs__item__title">Amazing title2</span><span class="hs__item__subtitle">some subtitle</span></div>
+      </li>
+      <li class="hs__item">
+        <div class="hs__item__image__wrapper">
+          <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="https://picsum.photos/id/134/300/300" alt=""/>
+        </div>
+        <div class="hs__item__description"><span class="hs__item__title">Amazing title3</span><span class="hs__item__subtitle">some subtitle</span></div>
+      </li>
+      <li class="hs__item">
+        <div class="hs__item__image__wrapper">
+          <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="https://picsum.photos/id/144/300/300" alt=""/>
+        </div>
+        <div class="hs__item__description"><span class="hs__item__title">Amazing title4</span><span class="hs__item__subtitle">some subtitle</span></div>
+      </li>
+      <li class="hs__item">
+        <div class="hs__item__image__wrapper">
+          <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="https://picsum.photos/id/154/300/300" alt=""/>
+        </div>
+        <div class="hs__item__description"><span class="hs__item__title">Amazing title5</span><span class="hs__item__subtitle">some subtitle</span></div>
+      </li>
+      <li class="hs__item">
+        <div class="hs__item__image__wrapper">
+          <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="https://picsum.photos/id/164/300/300" alt=""/>
+        </div>
+        <div class="hs__item__description"><span class="hs__item__title">Amazing title6</span><span class="hs__item__subtitle">some subtitle</span></div>
+      </li>
+      <li class="hs__item">
+        <div class="hs__item__image__wrapper">
+          <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="https://picsum.photos/id/174/300/300" alt=""/>
+        </div>
+        <div class="hs__item__description"><span class="hs__item__title">Amazing title7</span><span class="hs__item__subtitle">some subtitle</span></div>
+      </li>
+      <li class="hs__item">
+        <div class="hs__item__image__wrapper">
+          <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="https://picsum.photos/id/184/300/300" alt=""/>
+        </div>
+        <div class="hs__item__description"><span class="hs__item__title">Amazing title8</span><span class="hs__item__subtitle">some subtitle</span></div>
+      </li>
+      <li class="hs__item">
+        <div class="hs__item__image__wrapper">
+          <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="https://picsum.photos/id/194/300/300" alt=""/>
+        </div>
+        <div class="hs__item__description"><span class="hs__item__title">Amazing title9</span><span class="hs__item__subtitle">some subtitle</span></div>
+      </li>
+      <li class="hs__item">
+        <div class="hs__item__image__wrapper">
+          <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="https://picsum.photos/id/1104/300/300" alt=""/>
+        </div>
+        <div class="hs__item__description"><span class="hs__item__title">Amazing title10</span><span class="hs__item__subtitle">some subtitle</span></div>
+      </li>
+      <li class="hs__item">
+        <div class="hs__item__image__wrapper">
+          <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="https://picsum.photos/id/1114/300/300" alt=""/>
+        </div>
+        <div class="hs__item__description"><span class="hs__item__title">Amazing title11</span><span class="hs__item__subtitle">some subtitle</span></div>
+      </li>
+      <li class="hs__item">
+        <div class="hs__item__image__wrapper">
+          <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="https://picsum.photos/id/1124/300/300" alt=""/>
+        </div>
+        <div class="hs__item__description"><span class="hs__item__title">Amazing title12</span><span class="hs__item__subtitle">some subtitle</span></div>
+      </li>
+      <li class="hs__item">
+        <div class="hs__item__image__wrapper">
+          <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="https://picsum.photos/id/1134/300/300" alt=""/>
+        </div>
+        <div class="hs__item__description"><span class="hs__item__title">Amazing title13</span><span class="hs__item__subtitle">some subtitle</span></div>
+      </li>
+      <li class="hs__item">
+        <div class="hs__item__image__wrapper">
+          <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="https://picsum.photos/id/1144/300/300" alt=""/>
+        </div>
+        <div class="hs__item__description"><span class="hs__item__title">Amazing title14</span><span class="hs__item__subtitle">some subtitle</span></div>
+      </li>
+      <li class="hs__item">
+        <div class="hs__item__image__wrapper">
+          <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="https://picsum.photos/id/1154/300/300" alt=""/>
+        </div>
+        <div class="hs__item__description"><span class="hs__item__title">Amazing title15</span><span class="hs__item__subtitle">some subtitle</span></div>
+      </li>
+      <li class="hs__item">
+        <div class="hs__item__image__wrapper">
+          <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="https://picsum.photos/id/1164/300/300" alt=""/>
+        </div>
+        <div class="hs__item__description"><span class="hs__item__title">Amazing title16</span><span class="hs__item__subtitle">some subtitle</span></div>
+      </li>
+      <li class="hs__item">
+        <div class="hs__item__image__wrapper">
+          <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="https://picsum.photos/id/1174/300/300" alt=""/>
+        </div>
+        <div class="hs__item__description"><span class="hs__item__title">Amazing title17</span><span class="hs__item__subtitle">some subtitle</span></div>
+      </li>
+      <li class="hs__item">
+        <div class="hs__item__image__wrapper">
+          <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="https://picsum.photos/id/1184/300/300" alt=""/>
+        </div>
+        <div class="hs__item__description"><span class="hs__item__title">Amazing title18</span><span class="hs__item__subtitle">some subtitle</span></div>
+      </li>
+      <li class="hs__item">
+        <div class="hs__item__image__wrapper">
+          <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="https://picsum.photos/id/1194/300/300" alt=""/>
+        </div>
+        <div class="hs__item__description"><span class="hs__item__title">Amazing title19</span><span class="hs__item__subtitle">some subtitle</span></div>
+      </li>
+      <li class="hs__item">
+        <div class="hs__item__image__wrapper">
+          <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="https://picsum.photos/id/1204/300/300" alt=""/>
+        </div>
+        <div class="hs__item__description"><span class="hs__item__title">Amazing title20</span><span class="hs__item__subtitle">some subtitle</span></div>
+      </li>
+    </ul>
+  </div>
+</div>
+
 </html>
