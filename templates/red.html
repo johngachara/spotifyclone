@@ -285,9 +285,9 @@ ul {
         {% for x in featured %}
       <li class="hs__item">
         <div class="hs__item__image__wrapper">
-          <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="{{ x.image_url }}" alt=""/>
+          <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="{{ x.image }}" alt=""/>
         </div>
-        <div class="hs__item__description"><span class="hs__item__title">Amazing title0</span><span class="hs__item__subtitle">{{ x.songname }}</span></div>
+        <div class="hs__item__description"><span class="hs__item__title">{{x.name}}</span><span class="hs__item__subtitle">play</span></div>
           {% endfor %}
       </li>
     </ul>

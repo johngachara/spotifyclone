@@ -100,16 +100,16 @@ def redirectt(request):
         artist_info.append(artistid)
         songs_info.append({"image":url,"name":name,"artist_name":artist_name,"time":timez,"uri":spotifyuri})
     featuredurl = 'https://api.spotify.com/v1/browse/featured-playlists'
-    params2 = {"country":"","locale":"","timestamp":"","limit":20}
+    params2 = {"locale":"","limit":20}
     featuredlist = []
-    response2 = requests.get(featuredurl,params2,headers=headers2).json()
-    actualresponse = response2.get('playlists','')
-    for song in response2.get('playlists',''):
-        playlist = song.get('items','')[0]
-        songname = playlist.get('name','')
-        imageurl = song.get('images',{[]})[0]
-        actualurl = imageurl.get('url','')
-        featuredlist.append({"songname":songname,"imageurl":actualurl})
+    response2 = requests.get(featuredurl,params=params2,headers=headers2).json()
+    playlist = response2.get('playlists','')
+    for items in playlist.get('items',[]):
+        image2 = items.get('images','')[0]
+        url2 = image2.get('url','')
+        name2 = items.get('name','')
+        featuredlist.append({"image":url2,"name":name2})
+
 
     return render(request, 'red.html', {"data":songs_info,
                                         "access_token":access_token,
