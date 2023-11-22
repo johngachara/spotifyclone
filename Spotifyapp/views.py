@@ -108,12 +108,22 @@ def redirectt(request):
         image2 = items.get('images','')[0]
         url2 = image2.get('url','')
         name2 = items.get('name','')
-        featuredlist.append({"image":url2,"name":name2})
+        spotifyuri2 = items.get('uri','')
+        featuredlist.append({"image":url2,"name":name2,"spotify_uri":spotifyuri2})
+    recent_tracks_url = 'https://api.spotify.com/v1/me/playlists'
+    response3 = requests.get(recent_tracks_url,params={"limit":20},headers=headers2).json()
+    items3 = response3.get('items',[])
+    recent_playlist = []
+    for e in items3:
+        image3 = e.get('images','')[0]
+        url3 = image3.get('url','')
+        name3 = e.get('name','')
+        recent_playlist.append({"image":url3,"name":name3})
 
 
     return render(request, 'red.html', {"data":songs_info,
                                         "access_token":access_token,
-                                        "featured":featuredlist})
+                                        "featured":featuredlist,"recent":recent_playlist})
 def savedpage(request):
     playlisturl = 'https://api.spotify.com/v1/me/playlists'
     access_token = request.session.get('access_token')
@@ -128,7 +138,17 @@ def savedpage(request):
         name = item.get('name','')
         pic = item.get('images', [{}])[0].get('url', '')
         saved_items.append({"name":name,"descr":descr,"pic":pic})
-    return render(request,'saved.html',{"data":saved_items})
+    saved_albums_url = 'https://api.spotify.com/v1/me/albums'
+    response2 = requests.get(saved_albums_url,params={"limit":20},headers=headers).json()
+    items2 = response2.get('items',[])
+    saved_albums = []
+    for i in items2:
+        album = i.get('album','')
+        image = album.get('images','')[0]
+        url = image.get('url','')
+        name2 = album.get('name','')
+        saved_albums.append({"image":url,"name":name2})
+    return render(request,'saved.html',{"data":saved_items,"saved_albums":saved_albums})
 def albumpage(request):
     access_token = request.session.get('access_token')
     albumurl = 'https://api.spotify.com/v1/artists'

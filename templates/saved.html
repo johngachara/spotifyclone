@@ -1,231 +1,628 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://kit.fontawesome.com/18aa13a732.js" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Spotify Clone</title>
     <style>
-        @import url("https://fonts.googleapis.com/css?family=Cardo:400i|Rubik:400,700&display=swap");
-:root {
-  --d: 700ms;
-  --e: cubic-bezier(0.19, 1, 0.22, 1);
-  --font-sans: "Rubik", sans-serif;
-  --font-serif: "Cardo", serif;
+        html {
+  --main-bg-color: #0e0e0e;
+  --main-font-color: #b9b5b5;
+  --main-highlight-color: #fff;
+  --main-link-active-color: #fff;
+  --main-border-color: #8080804d;
+  --activity-bg-color: #000;
+  --footer-height: 100px;
+  --main-bg-color-dark: #202020;
 }
 
 * {
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   height: 100%;
-    background-color: black;
 }
 
-.page-content {
-  display: grid;
-  grid-gap: 1rem;
-  padding: 1rem;
-  max-width: 100%;
-    height: 1200px;
-    color: whitesmoke;
-  margin: 0 auto;
-  font-family: var(--font-sans);
+body {
+  font-family: "Lato", Arial, sans-serif;
+  line-height: 1.4;
+  font-size: 14px;
+  color: var(--main-font-color);
 }
-@media (min-width: 600px) {
-  .page-content {
-    grid-template-columns: repeat(2, 1fr);
-  }
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+ul {
+  list-style-type: none;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 400;
+  margin: 0;
+  color: var(--main-highlight-color);
+}
+
+.button {
+  padding: 15px 10px;
+  background: transparent;
+  border: 1px solid var(--main-font-color);
+  border-radius: 20px;
+  color: var(--main-font-color);
+  text-transform: uppercase;
+  font-size: 12px;
+  transition: all 0.3s;
+  letter-spacing: 1.2px;
+}
+.button:hover {
+  background: #fff;
+  color: #000;
+  border: 1px solid #fff;
+}
+
+.link {
+  display: inline-block;
+  color: var(--main-font-color);
+  padding: 5px;
+  text-decoration: none;
+  transition: all 0.5s;
+}
+.link:visited, .link:focus .link:hover, .link:active {
+  color: var(--main-font-color);
+}
+.link:hover, .link:active, .link:focus {
+  color: var(--main-link-active-color);
+}
+
+.wrapper {
+  display: grid;
+  background: var(--main-bg-color);
+  grid-gap: 10px;
+  min-height: 100vh;
+  grid-template-columns: 100%;
+  grid-template-areas: "main" "sidebar";
 }
 @media (min-width: 800px) {
-  .page-content {
-    grid-template-columns: repeat(4, 1fr);
+  .wrapper {
+    grid-template-columns: 200px auto;
+    grid-template-areas: "sidebar main";
+  }
+}
+@media (min-width: 1200px) {
+  .wrapper {
+    grid-template-columns: 200px auto 200px;
+    grid-template-areas: "sidebar main social";
   }
 }
 
-.card {
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  overflow: hidden;
-  padding: 1rem;
-  width: 100%;
-  text-align: center;
-  color: whitesmoke;
-  background-color: whitesmoke;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px rgba(0, 0, 0, 0.1), 0 4px 4px rgba(0, 0, 0, 0.1), 0 8px 8px rgba(0, 0, 0, 0.1), 0 16px 16px rgba(0, 0, 0, 0.1);
+.sidebar {
+  background: var(--activity-bg-color);
+  grid-area: sidebar;
 }
-@media (min-width: 600px) {
-  .card {
-    height: 350px;
+
+.sidebar li {
+  line-height: 2;
+}
+
+.sidebar__header {
+  margin-bottom: 5px;
+}
+
+.sidebar__header {
+  text-transform: uppercase;
+  font-weight: 300;
+  font-size: 12px;
+  letter-spacing: 1.2px;
+}
+
+main {
+  grid-area: main;
+  padding: 10px 20px;
+}
+@media (min-width: 800px) {
+  main {
+    padding: 10px 20px calc(var(--footer-height) + 40px);
+    margin-bottom: 20px;
   }
 }
-.card:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
+
+.main__header h1 {
+  margin-bottom: 20px;
+  font-size: 38px;
+}
+
+.main__nav {
+  margin-bottom: 30px;
+  border-bottom: 1px solid var(--main-border-color);
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: start;
+  grid-gap: 10px;
+}
+
+.main__nav .link {
+  text-transform: uppercase;
+  font-weight: 300;
+  font-size: 12px;
+  letter-spacing: 1.2px;
+  font-size: 13px;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 11px;
+}
+.main__nav .link.is-active {
+  color: var(--main-link-active-color);
+  border-bottom: 3px solid green;
+}
+.main__nav .link:nth-of-type(2), .main__nav .link:nth-of-type(3), .main__nav .link:nth-of-type(4), .main__nav .link:nth-of-type(5) {
+  display: none;
+}
+@media (min-width: 800px) {
+  .main__nav .link:nth-of-type(2), .main__nav .link:nth-of-type(3), .main__nav .link:nth-of-type(4), .main__nav .link:nth-of-type(5) {
+    display: inline;
+  }
+}
+
+.main__playlists h2 {
+  font-size: 20px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--main-border-color);
+}
+
+.music__list {
+  display: grid;
+  grid-template-columns: minmax(200px, auto);
+  grid-gap: 20px;
   width: 100%;
-  height: 110%;
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
+}
+@media (min-width: 800px) {
+  .music__list {
+    grid-template-columns: repeat(2, minmax(250px, 1fr));
+  }
+}
+@media (min-width: 1200px) {
+  .music__list {
+    grid-template-columns: repeat(3, minmax(250px, 1fr));
+  }
+}
+@media (min-width: 1600px) {
+  .music__list {
+    grid-template-columns: repeat(4, minmax(250px, 1fr));
+  }
+}
+
+.music__list-item {
+  padding: 10px;
+  min-height: 250px;
   background-size: cover;
-  background-position: 0 0;
-  transition: transform calc(var(--d) * 1.5) var(--e);
-  pointer-events: none;
-}
-.card:after {
-    content: "";
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 200%;
-    pointer-events: none;
-    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.009) 11.7%, rgba(0, 0, 0, 0.034) 22.1%, rgba(0, 0, 0, 0.072) 31.2%, rgba(0, 0, 0, 0.123) 39.4%, rgba(0, 0, 0, 0.182) 46.6%, rgba(0, 0, 0, 0.249) 53.1%, rgba(0, 0, 0, 0.32) 58.9%, rgba(0, 0, 0, 0.394) 64.3%, rgba(0, 0, 0, 0.468) 69.3%, rgba(0, 0, 0, 0.54) 74.1%, rgba(0, 0, 0, 0.607) 78.8%, rgba(0, 0, 0, 0.668) 83.6%, rgba(0, 0, 0, 0.721) 88.7%, rgba(0, 0, 0, 0.762) 94.1%, rgba(0, 0, 0, 0.79) 100%);
-    transform: translateY(-50%);
-    transition: transform calc(var(--d) * 2) var(--e);
-}
-{% for item in data %}
-.card:nth-child({{ forloop.counter }}):before {
-  background-image: url({{ item.pic }});
-}
-        {% endfor %}
-.content {
-  position: relative;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 0.4s ease-in;
   display: flex;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
+  position: relative;
+  cursor: pointer;
+}
+.music__list-item:hover {
+  opacity: 1 !important;
+}
+
+.activity {
+  grid-area: social;
+  display: none;
+  background-color: var(--activity-bg-color);
+  padding-left: 20px;
+}
+.activity h2 {
+  margin: 30px 0;
+}
+@media (min-width: 1200px) {
+  .activity {
+    display: block;
+  }
+}
+
+.footer {
+  position: fixed;
+  display: grid;
+  height: var(--footer-height);
+  grid-template-columns: 150px 1fr auto;
+  bottom: 0;
+  grid-gap: 20px;
+  background: var(--main-bg-color-dark);
+  padding: 20px 20px 100px;
+  width: 100%;
+}
+@media (min-width: 800px) {
+  .footer {
+    grid-template-columns: 250px 1fr 60px;
+  }
+}
+
+.now-playing {
+  display: flex;
+}
+
+.album__image {
+  width: 100px;
+  height: 100px;
+}
+
+.album__musician,
+.album__title {
+  display: block;
+}
+
+.album__info {
+  padding-left: 15px;
+}
+
+.album__title {
+  color: var(--main-highlight-color);
+  margin-bottom: 5px;
+}
+
+.album__musician {
+  font-size: 13px;
+}
+
+i {
+  color: var(--main-font-color);
+  padding: 0 10px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+i:hover {
+  color: var(--main-link-active-color);
+}
+i.fa-play-circle {
+  font-size: 21px;
+}
+i.fa-play-circle:hover {
+  transform: scale(1.2);
+}
+
+
+.play-controls {
+  align-self: center;
+  justify-self: center;
+}
+
+.play-device-controls {
+  align-self: center;
+}
+
+.song__title {
+  font-size: 18px;
+  color: var(--main-highlight-color);
+  margin-bottom: 8px;
+}
+
+.song__creator {
+  font-size: 12px;
+}
+       * {
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  /* Webkit */
+  width: 0;
+  height: 0;
+}
+
+.hs {
+  display: flex;
+  overflow-x: scroll;
+  justify-content: space-between;
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE 10+ */
+  -webkit-overflow-scrolling: touch;
+  margin: 0 -20px;
+}
+.hs__header {
+  display: flex;
   align-items: center;
   width: 100%;
-  padding: 1rem;
-  transition: transform var(--d) var(--e);
-  z-index: 1;
 }
-.content > * + * {
-  margin-top: 1rem;
+.hs__headline {
+  flex: 1;
 }
-
-.title {
-  font-size: 1.3rem;
-  font-weight: bold;
-  line-height: 1.2;
+.hs__arrows {
+  align-self: center;
 }
-
-.copy {
-  font-family: var(--font-serif);
-  font-size: 1.125rem;
-  font-style: italic;
-  line-height: 1.35;
-}
-
-.btn {
+.hs__arrows .arrow:before {
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  content: "";
+  background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNSIgaGVpZ2h0PSI5IiB2aWV3Qm94PSIwIDAgMTUgOSI+Cgk8cGF0aCBmaWxsPSIjMzMzMzMzIiBkPSJNNy44NjcgOC41NzRsLTcuMjItNy4yMi43MDctLjcwOEw3Ljg2NyA3LjE2IDE0LjA1Ljk4bC43MDYuNzA3Ii8+Cjwvc3ZnPgo=");
+  background-size: contain;
+  filter: brightness(5);
+  width: 18px;
+  height: 12px;
   cursor: pointer;
-  margin-top: 1.5rem;
-  padding: 0.75rem 1.5rem;
-  font-size: 0.65rem;
-  font-weight: bold;
-  letter-spacing: 0.025rem;
-  text-transform: uppercase;
+}
+.hs__arrows .arrow.disabled:before {
+  filter: brightness(2);
+}
+.hs__arrows .arrow.arrow-prev:before {
+  transform: rotate(90deg);
+  margin-right: 10px;
+}
+.hs__arrows .arrow.arrow-next:before {
+  transform: rotate(-90deg);
+}
+.hs__item {
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: calc(100% / 4 - (10px * 2) - (20px / 4));
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+@media only screen and (max-width: 990px) {
+  .hs__item {
+    flex-basis: calc(100% / 3 - (10px * 2) - (20px / 3));
+  }
+}
+.hs__item:last-child:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 10px;
+  height: 1px;
+  right: calc(10px * 2 * -1);
+}
+.hs__item:first-child {
+  margin-left: calc(10px * 2);
+}
+.hs__item__description {
+  z-index: 1;
+  align-self: flex-start;
+  margin: 10px 0;
+}
+.hs__item__subtitle {
+  color: #aaa;
+  display: block;
+}
+.hs__item__image__wrapper {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 100%;
+}
+.hs__item__image {
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+@media only screen and (min-width: 990px) {
+  .hs__wrapper {
+    overflow: hidden;
+  }
+}
+@media (hover: none) and (pointer: coarse) {
+  .hs__wrapper .hs__arrows {
+    display: none;
+  }
+  .hs__wrapper .hs__item {
+    flex: 1 0 calc(23% - 10px * 2);
+  }
+}
+@media only screen and (hover: none) and (pointer: coarse) and (max-width: 990px) {
+  .hs__wrapper .hs__item {
+    flex: 1 0 calc(45% - 10px * 2);
+  }
+}
+
+/* Base Styling */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: "Muli", sans-serif;
   color: white;
-  background-color: black;
-  border: none;
-}
-.btn:hover {
-  background-color: #0d0d0d;
-}
-.btn:focus {
-  outline: 1px dashed yellow;
-  outline-offset: 3px;
+  background: white;
+  line-height: 1.5;
+  letter-spacing: 0.15px;
 }
 
-@media (hover: hover) and (min-width: 600px) {
-  .card:after {
-    transform: translateY(0);
-  }
-
-  .content {
-    transform: translateY(calc(100% - 4.5rem));
-  }
-  .content > *:not(.title) {
-    opacity: 0;
-    transform: translateY(1rem);
-    transition: transform var(--d) var(--e), opacity var(--d) var(--e);
-  }
-
-  .card:hover,
-.card:focus-within {
-    align-items: center;
-  }
-  .card:hover:before,
-.card:focus-within:before {
-    transform: translateY(-4%);
-  }
-  .card:hover:after,
-.card:focus-within:after {
-    transform: translateY(-50%);
-  }
-  .card:hover .content,
-.card:focus-within .content {
-    transform: translateY(0);
-  }
-  .card:hover .content > *:not(.title),
-.card:focus-within .content > *:not(.title) {
-    opacity: 1;
-    transform: translateY(0);
-    transition-delay: calc(var(--d) / 8);
-  }
-
-  .card:focus-within:before, .card:focus-within:after,
-.card:focus-within .content,
-.card:focus-within .content > *:not(.title) {
-    transition-duration: 0s;
+.container {
+  max-width: 990px;
+  padding: calc(10px * 2);
+  margin: 0 auto;
+  background: #121212;
+  mix-blend-mode: invert;
+  position: relative;
+}
+.container:after {
+  content: "";
+  width: 100vw;
+  height: 100%;
+  background: #212121;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  z-index: -1;
+}
+@media only screen and (min-width: 990px) {
+  .container {
+    padding: calc(10px * 4) calc(10px * 8);
   }
 }
+
+.description {
+  max-width: 990px;
+  color: #212121;
+  margin: 0 auto;
+  padding: calc(10px * 4);
+}
+
+
+
     </style>
- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/18aa13a732.js" crossorigin="anonymous"></script>
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-</head>
-<body class="d-flex h-100 text-center text-bg-dark"style="width: 100%;height: 100%">
-<div class="d-flex flex-column flex-shrink-0 bg-body-tertiary" style="width: 4.5rem;background-color: black!important;height: 1000px">
-    <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
 
-        <li>
-            <a href="{% url 'home' %}" class="nav-link py-3 border-bottom rounded-0" title="Home" data-bs-toggle="tooltip" data-bs-placement="right">
-                <i class="fa-solid fa-house" style="color: #edeff3;"></i>
-            </a>
-        </li>
-        <li>
-            <a href="#" class="nav-link py-3 border-bottom rounded-0" title="Library" data-bs-toggle="tooltip" data-bs-placement="right">
-                <i class="fa-regular fa-bookmark" style="color: #e9ecf1;"></i>
-            </a>
-        </li>
-        <li>
-            <a href="#" class="nav-link py-3 border-bottom rounded-0" title="Customers" data-bs-toggle="tooltip" data-bs-placement="right">
-            </a>
-        </li>
+ <script
+  src="https://code.jquery.com/jquery-3.7.1.js"
+  integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+  crossorigin="anonymous"></script>
+      <script>
+        $(document).ready(function () {
+            var instance = $(".hs__wrapper");
+            $.each(instance, function (key, value) {
+
+                var arrows = $(instance[key]).find(".arrow"),
+                    prevArrow = arrows.filter('.arrow-prev'),
+                    nextArrow = arrows.filter('.arrow-next'),
+                    box = $(instance[key]).find(".hs"),
+                    x = 0,
+                    mx = 0,
+                    maxScrollWidth = box[0].scrollWidth - (box[0].clientWidth / 2) - (box.width() / 2);
+
+                $(arrows).on('click', function () {
+
+                    if ($(this).hasClass("arrow-next")) {
+                        x = ((box.width() / 2)) + box.scrollLeft() - 10;
+                        box.animate({
+                            scrollLeft: x,
+                        });
+                    } else {
+                        x = ((box.width() / 2)) - box.scrollLeft() - 10;
+                        box.animate({
+                            scrollLeft: -x,
+                        });
+                    }
+
+                });
+
+                $(box).on({
+                    mousemove: function (e) {
+                        var mx2 = e.pageX - this.offsetLeft;
+                        if (mx) this.scrollLeft = this.sx + mx - mx2;
+                    },
+                    mousedown: function (e) {
+                        this.sx = this.scrollLeft;
+                        mx = e.pageX - this.offsetLeft;
+                    },
+                    scroll: function () {
+                        toggleArrows();
+                    }
+                });
+
+                $(document).on("mouseup", function () {
+                    mx = 0;
+                });
+
+                function toggleArrows() {
+                    if (box.scrollLeft() > maxScrollWidth - 10) {
+                        // disable next button when the right end has reached
+                        nextArrow.addClass('disabled');
+                    } else if (box.scrollLeft() < 10) {
+                        // disable prev button when the left end has reached
+                        prevArrow.addClass('disabled');
+                    } else {
+                        // both are enabled
+                        nextArrow.removeClass('disabled');
+                        prevArrow.removeClass('disabled');
+                    }
+                }
+
+            });
+        });
+    </script>
+</head>
+
+<div class="wrapper">
+  <aside class="sidebar">
+    <ul class="sidebar__main-links">
+      <li><a href="{% url 'redi' %}"style="text-decoration: none;color: white">Home</a></li>
+      <li>Search</li>
     </ul>
-    <div class="dropdown border-top">
-        <a href="#" class="d-flex align-items-center justify-content-center p-3 link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="https://github.com/mdo.png" alt="mdo" width="24" height="24" class="rounded-circle">
-        </a>
-        <ul class="dropdown-menu text-small shadow">
-            <li><a class="dropdown-item" href="#">New project...</a></li>
-            <li><a class="dropdown-item" href="#">Settings</a></li>
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Sign out</a></li>
-        </ul>
+    <ul class="sidebar__music">
+      <h2 class="sidebar__header">Your Music</h2>
+    </ul>
+  </aside>
+  <main>
+    <header class="main__header">
+      <h1>SAVED</h1>
+    </header>
+    <nav class="main__nav"><a class="link is-active" href="#">Downloads</a></nav>
+    <section class="main__playlists">
+      <h2>My Library</h2>
+
+<div class="container">
+  <div class="hs__wrapper">
+    <div class="hs__header">
+      <h2 class="hs__headline">Saved Playlists
+      </h2>
+      <div class="hs__arrows"><a class="arrow disabled arrow-prev"></a><a class="arrow arrow-next"></a></div>
     </div>
-</div>
-<main class="page-content">
-    {% for item in data %}
-    <div class="card" style="color: whitesmoke">
-        <div class="content">
-            <h2 class="title">{{item.name}}</h2>
-            <p class="copy"> </p>
-            <button class="btn">View</button>
+    <ul class="hs">
+        {% for i in data %}
+      <li class="hs__item">
+        <div class="hs__item__image__wrapper">
+          <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="{{ i.pic }}" alt=""/>
         </div>
+        <div class="hs__item__description"><span class="hs__item__title">{{ i.name }}</span><span class="hs__item__subtitle">View</span></div>
+      {% endfor %}
+      </li>
+    </ul>
+  </div>
+</div>
+    <div class="container">
+  <div class="hs__wrapper">
+    <div class="hs__header">
+      <h2 class="hs__headline">Saved Albums
+      </h2>
+      <div class="hs__arrows"><a class="arrow disabled arrow-prev"></a><a class="arrow arrow-next"></a></div>
     </div>
-    {% endfor %}
-</main>
-</body>
+    <ul class="hs">
+        {% for i in saved_albums %}
+      <li class="hs__item">
+        <div class="hs__item__image__wrapper">
+          <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="{{ i.image }}" alt=""/>
+        </div>
+        <div class="hs__item__description"><span class="hs__item__title">{{ i.name }}</span><span class="hs__item__subtitle">View</span></div>
+      {% endfor %}
+      </li>
+    </ul>
+  </div>
+</div>
+    </section>
+
+<footer class="footer">
+  <div class="now-playing"><img class="album__image" src="https://images.unsplash.com/photo-1515233451477-90d9cd4d57ed?ixlib=rb-0.3.5&amp;q=85&amp;fm=jpg&amp;crop=entropy&amp;cs=srgb&amp;ixid=eyJhcHBfaWQiOjE0NTg5fQ&amp;s=cade564aeff757d648625aaac06e837c"/>
+    <div class="album__info"><span class="album__title">Stay There Now</span><span class="album__musician">The Harmonics</span></div>
+  </div>
+  <div class="play-controls"><i class="fas fa-fast-backward"></i><i class="far fa-play-circle"></i><i class="fas fa-fast-forward"></i></div>
+  <div class="play-device-controls"><i class="fas fa-volume-up"></i></div>
+</footer>
+  </main>
+</div>
 </html>
