@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 import requests
 import base64
+from django.contrib import messages
 
 from django.urls import reverse
 
@@ -109,7 +110,7 @@ def redirectt(request):
         url2 = image2.get('url','')
         name2 = items.get('name','')
         spotifyuri2 = items.get('uri','')
-        featuredlist.append({"image":url2,"name":name2,"spotify_uri":spotifyuri2})
+        featuredlist.append({"image":url2,"name":name2,"uri":spotifyuri2})
     recent_tracks_url = 'https://api.spotify.com/v1/me/playlists'
     response3 = requests.get(recent_tracks_url,params={"limit":20},headers=headers2).json()
     items3 = response3.get('items',[])
@@ -118,7 +119,8 @@ def redirectt(request):
         image3 = e.get('images','')[0]
         url3 = image3.get('url','')
         name3 = e.get('name','')
-        recent_playlist.append({"image":url3,"name":name3})
+        uri = e.get('uri','')
+        recent_playlist.append({"image":url3,"name":name3,"uri":uri})
 
 
     return render(request, 'red.html', {"data":songs_info,
@@ -145,19 +147,11 @@ def savedpage(request):
     for i in items2:
         album = i.get('album','')
         image = album.get('images','')[0]
+        spotify_id = album.get('id','')
         url = image.get('url','')
-        name2 = album.get('name','')
-        saved_albums.append({"image":url,"name":name2})
+        album_name = album.get('name','')
+        saved_albums.append({"image":url,"name":album_name,"spotify_id":spotify_id})
     return render(request,'saved.html',{"data":saved_items,"saved_albums":saved_albums})
-def albumpage(request):
-    access_token = request.session.get('access_token')
-    albumurl = 'https://api.spotify.com/v1/artists'
-    headers = {
-        "Authorization":f"Bearer {access_token}"
-    }
-    ans = requests.get(albumurl,params={"id":ids},headers=headers).json()
-    followers = ans.get('name','')
-    return render(request,'savedalbum.html',{"f":followers})
 def play_song(request,uri):
     play_url = 'https://api.spotify.com/v1/me/player/play'
     params = {"context_uri":uri,"device_id":""}
@@ -169,5 +163,24 @@ def play_song(request,uri):
     if response:
         redirect_url = reverse('redi')
         return HttpResponseRedirect(redirect_url)
+    else:
+        messages.error(request,"Connect to spotify device to play music")
+        return redirect('redi')
+def album_page(request,spotify_id):
+    access_token = request.session.get('access_token')
+    track_url = f"https://api.spotify.com/v1/albums/{spotify_id}/tracks"
+    headers = {
+        "Authorization": f"Bearer {access_token}"
+    }
+    response = requests.get(track_url,params={"limit":30},headers=headers).json()
+    items = response.get('items',[])
+    albums = []
+    for i in items:
+        name = i.get('name','')
+        artist = i.get('artists','')[0]
+        uri = i.get('uri','')
+        artist_name = artist.get('name','')
+        albums.append({"name":name,"uri":uri,"artist_name":artist_name})
 
+    return render(request,'albums.html',{"data":albums,"uri": uri})
 

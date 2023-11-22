@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Title</title>
+</head>
+<div class="bg-black min-h-screen text-gray-300 p-8">
+
+  <!-- header section -->
+  <div class="md:flex">
+    <!--  album cover  -->
+    <img class="mr-6 mb-4 md:mb-0" src="https://placekitten.com/g/150/150">
+
+    <!--  content  -->
+    <div class="flex flex-col justify-center">
+      <h4 class="mt-0 mb-3 text-xs text-gray-400 tracking-widest uppercase">Playlist</h4>
+      <h1 class="mt-0 mb-3 text-white">Middle Child Radio</h1>
+      <p class="text-gray-500 text-xs mb-2">
+        With J. Cole, Miguel, 6LACK, Future and more
+      </p>
+      <p class="text-gray-500 text-xs">
+        Created by <a>Spotify</a> · 50 songs, 2 hr 54 min
+      </p>
+    </div>
+  </div>
+
+  <!--  action buttons  -->
+  <div class="mt-6 flex justify-between">
+    <div class="flex">
+    </div>
+  </div>
+
+  <!-- songs go here -->
+  <div class="mt-10">
+    <!-- header -->
+    <div class="flex text-xs text-gray-500">
+      <div class="p-2 w-10 flex-shrink-0"></div>
+      <div class="p-2 w-10 flex-shrink-0"></div>
+         <a href="{% url 'play' uri %}" class="block bg-green-500 text-green-100 rounded-full py-2 px-10 mr-4">Play</a>
+      <div class="p-2 w-full">Title</div>
+      <div class="p-2 w-full">Artist</div>
+
+
+
+    </div>
+
+    <!-- song list -->
+        {% for item in data %}
+      <div class="flex border-b border-gray-900 hover:bg-gray-900">
+
+        <div class="p-2 w-10 flex-shrink-0"><span> </span></div>
+        <div class="p-2 w-full">{{ item.name }}</div>
+        <div class="p-2 w-full">{{ item.artist_name }}</div>
+
+      </div>
+        {% endfor %}
+
+  </div>
+
+
+</div>
+</html>

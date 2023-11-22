@@ -608,7 +608,7 @@ body {
         <div class="hs__item__image__wrapper">
           <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="{{ i.image }}" alt=""/>
         </div>
-        <div class="hs__item__description"><span class="hs__item__title">{{ i.name }}</span><span class="hs__item__subtitle">View</span></div>
+        <div class="hs__item__description"><span class="hs__item__title">{{ i.name }}</span><span class="hs__item__subtitle"><a type="button" href="{% url 'saved_albums' i.spotify_id %}">View</a> </span></div>
       {% endfor %}
       </li>
     </ul>

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://kit.fontawesome.com/18aa13a732.js" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
@@ -254,22 +255,27 @@ ul {
     </script>
 
 </head>
-
-
+<body>
+{% include 'alerts.html' %}
 <div class="container">
+{% include 'navbar.html' %}
+
+{% block content %}
   <div class="hs__wrapper">
     <div class="hs__header">
-      <h2 class="hs__headline">Recent Tracks
+
+      <h2 class="hs__headline"style="color: white">Recent Tracks
       </h2>
       <div class="hs__arrows"><a class="arrow disabled arrow-prev"></a><a class="arrow arrow-next"></a></div>
     </div>
+
     <ul class="hs">
         {% for i in data %}
       <li class="hs__item">
         <div class="hs__item__image__wrapper">
           <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="{{ i.image }}" alt=""/>
         </div>
-        <div class="hs__item__description"><span class="hs__item__title">{{ i.name }}</span><span class="hs__item__subtitle">{{ i.artist_name }}</span></div>
+        <div class="hs__item__description"><span class="hs__item__title" style="color: white">{{ i.name }}</span><span class="hs__item__subtitle">{{ i.artist_name }}</span></div>
         <a href="{% url 'play' i.uri %}" type="button">Play</a>
       {% endfor %}
       </li>
@@ -277,7 +283,7 @@ ul {
   </div>
   <div class="hs__wrapper">
     <div class="hs__header">
-      <h2 class="hs__headline">Featured tracks
+      <h2 class="hs__headline"style="color: white">Featured Playlists
       </h2>
       <div class="hs__arrows"><a class="arrow disabled arrow-prev"></a><a class="arrow arrow-next"></a></div>
     </div>
@@ -287,14 +293,15 @@ ul {
         <div class="hs__item__image__wrapper">
           <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="{{ x.image }}" alt=""/>
         </div>
-        <div class="hs__item__description"><span class="hs__item__title">{{x.name}}</span><span class="hs__item__subtitle">play</span></div>
+        <div class="hs__item__description"><span class="hs__item__title"></span><span class="hs__item__subtitle">{{ x.name }}</span></div>
+             <a href="{% url 'play' x.uri %}" type="button">Play</a>
           {% endfor %}
       </li>
     </ul>
   </div>
   <div class="hs__wrapper">
     <div class="hs__header">
-      <h2 class="hs__headline">Recent Playlists
+      <h2 class="hs__headline"style="color: white">Recent Playlists
       </h2>
       <div class="hs__arrows"><a class="arrow disabled arrow-prev"></a><a class="arrow arrow-next"></a></div>
     </div>
@@ -304,11 +311,13 @@ ul {
         <div class="hs__item__image__wrapper">
           <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="{{ y.image }}" alt=""/>
         </div>
-        <div class="hs__item__description"><span class="hs__item__title">{{ y.name }}</span><span class="hs__item__subtitle">some subtitle</span></div>
+        <div class="hs__item__description"><span class="hs__item__title"></span><span class="hs__item__subtitle">{{ y.name }}</span></div>
+       <a href="{% url 'play' y.uri %}" type="button">Play</a>
       </li>
      {% endfor %}
     </ul>
   </div>
 </div>
-
+{% endblock %}
+</body>
 </html>

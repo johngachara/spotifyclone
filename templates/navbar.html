@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body {
+  margin: auto;
+  font-family: 'Varela Round', sans-serif;
+  font-weight: bold;
+  background-color: #212121;
+}
+
+.header {
+  padding: 0 1.5rem;
+  background-color: #121212;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.spotifylogo{
+  margin: 0 1.5rem;
+  font-size: 3rem;
+  color: #1db954;
+}
+
+ul{
+  list-style-type: none;
+  display:flex;
+  margin: auto 0;
+}
+
+a{
+  text-decoration: none;
+  color: #b3b3b3;
+  margin-left: 1rem;
+  padding: 1rem 1rem;
+  border-radius: 3rem;
+  border-bottom: 1px solid #1db954;
+}
+
+a.btnsignup {
+  color: #121212;
+  background-color: #1db954;
+  padding: 1rem 2rem;
+  border: 1px solid #1db954;
+  transition: background-color 2s;
+}
+
+a.btnsignup:hover {
+  text-decoration: none;
+  background-color: #121212;
+  color: #1db954;
+  border: 1px solid #1db954;
+  transition: color 0.2s ease-in-out;
+  transition: background-color 0.3s ease-out;
+}
+
+a.btnmenu:hover {
+  text-decoration: none;
+  color: #1db954;
+}
+    </style>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div class="header">
+  <span class="spotifylogo">
+    <i class="fab fa-spotify"></i>
+    Spotify
+  </span>
+  <nav>
+    <ul>
+      <a class="btnmenu" href= "#"><li>Home</li></a>
+      <a class="btnmenu" href= "#"><li>Search</li></a>
+      <a class="btnmenu" href= "{% url 'saved' %}"><li>Downloads</li></a>
+    </ul>
+  </nav>
+</div>
+
+</body>
+</html>
