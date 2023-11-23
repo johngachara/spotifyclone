@@ -1,3 +1,5 @@
+import json
+
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 import requests
@@ -14,7 +16,7 @@ def index(request):
     URL = 'https://accounts.spotify.com/authorize'
     response_type = 'code'
     redurl = 'http://127.0.0.1:8000/red'
-    scope = 'playlist-read-private user-read-private user-read-email user-modify-playback-state user-library-read user-read-playback-state user-read-recently-played streaming'
+    scope = 'playlist-read-private user-read-private user-read-email user-modify-playback-state user-library-read user-read-playback-state user-read-recently-played streaming user-read-currently-playing'
     state = "state"
     spotify_url = f"{URL}?response_type={response_type}&client_id={client_id}&scope={scope}&redirect_uri={redurl}&state={state}"
     return redirect(spotify_url)
@@ -93,13 +95,14 @@ def redirectt(request):
         image = album.get('images','')[0]
         url = image.get('url','')
         name = track.get('name','')
+        type = album.get('type','')
         artists = track.get('artists','')[0]
         artist_name = artists.get('name','')
         spotifyuri = album.get('uri','')
         artistid = artists['id']
         timez = item.get('played_at','')
         artist_info.append(artistid)
-        songs_info.append({"image":url,"name":name,"artist_name":artist_name,"time":timez,"uri":spotifyuri})
+        songs_info.append({"image":url,"name":name,"artist_name":artist_name,"time":timez,"uri":spotifyuri,"type":type})
     featuredurl = 'https://api.spotify.com/v1/browse/featured-playlists'
     params2 = {"locale":"","limit":20}
     featuredlist = []
@@ -139,7 +142,8 @@ def savedpage(request):
         descr = item.get('description','')
         name = item.get('name','')
         pic = item.get('images', [{}])[0].get('url', '')
-        saved_items.append({"name":name,"descr":descr,"pic":pic})
+        playlist_id = item.get('id','')
+        saved_items.append({"name":name,"descr":descr,"pic":pic,"playlist_id":playlist_id})
     saved_albums_url = 'https://api.spotify.com/v1/me/albums'
     response2 = requests.get(saved_albums_url,params={"limit":20},headers=headers).json()
     items2 = response2.get('items',[])
@@ -151,6 +155,8 @@ def savedpage(request):
         url = image.get('url','')
         album_name = album.get('name','')
         saved_albums.append({"image":url,"name":album_name,"spotify_id":spotify_id})
+
+
     return render(request,'saved.html',{"data":saved_items,"saved_albums":saved_albums})
 def play_song(request,uri):
     play_url = 'https://api.spotify.com/v1/me/player/play'
@@ -161,26 +167,66 @@ def play_song(request,uri):
     }
     response = requests.put(play_url,json=params,headers=headers)
     if response:
-        redirect_url = reverse('redi')
-        return HttpResponseRedirect(redirect_url)
+        return redirect('redi')
     else:
         messages.error(request,"Connect to spotify device to play music")
         return redirect('redi')
+
+
 def album_page(request,spotify_id):
     access_token = request.session.get('access_token')
     track_url = f"https://api.spotify.com/v1/albums/{spotify_id}/tracks"
     headers = {
         "Authorization": f"Bearer {access_token}"
     }
-    response = requests.get(track_url,params={"limit":30},headers=headers).json()
+    response = requests.get(track_url,params={"limit":20},headers=headers).json()
     items = response.get('items',[])
     albums = []
     for i in items:
         name = i.get('name','')
         artist = i.get('artists','')[0]
-        uri = i.get('uri','')
+        uri = artist.get('uri','')
         artist_name = artist.get('name','')
         albums.append({"name":name,"uri":uri,"artist_name":artist_name})
+    return render(request,'albums.html',{"data":albums,"uri":uri})
+def playlist_page(request,playlist_id):
+    access_token = request.session.get('access_token')
+    playlist_url = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
+    headers = {
+        "Authorization": f"Bearer {access_token}"
+    }
+    response = requests.get(playlist_url,headers=headers,params={"limit":20}).json()
+    items = response.get('items',[])
+    tracks = []
+    for item in items:
+        track = item.get('track','')
+        album = track.get('album','')
+        images = album.get('images','')[0]
+        url = images.get('url','')
+        name = album.get('name','')
+        uri = album.get('uri','')
+        artist = album.get('artists','')[0]
+        artist_name = artist.get('name','')
+        tracks.append({"name":name,"uri":uri,"artist_name":artist_name})
+    return render(request,'albums.html',{"data":tracks,"uri": uri})
+def pause_song(request):
+    pause_url = 'https://api.spotify.com/v1/me/player/pause'
+    access_token = request.session.get('access_token')
+    headers = {
+        "Authorization": f"Bearer {access_token}"
+    }
+    params = {"device_id":""}
+    response = requests.put(pause_url,json=params,headers=headers)
+    if response:
+        redirect_url = reverse('redi')
+        return HttpResponseRedirect(redirect_url)
+    else:
+        messages.error(request,"No device / song Playing")
+        return redirect('redi')
 
-    return render(request,'albums.html',{"data":albums,"uri": uri})
+def currently_playing(request):
+    currently_playing_url = 'https://api.spotify.com/v1/me/player/currently-playing'
+
+
+
 

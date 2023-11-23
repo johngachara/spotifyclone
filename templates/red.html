@@ -264,7 +264,7 @@ ul {
   <div class="hs__wrapper">
     <div class="hs__header">
 
-      <h2 class="hs__headline"style="color: white">Recent Tracks
+      <h2 class="hs__headline"style="color: white">Recents
       </h2>
       <div class="hs__arrows"><a class="arrow disabled arrow-prev"></a><a class="arrow arrow-next"></a></div>
     </div>
@@ -275,8 +275,9 @@ ul {
         <div class="hs__item__image__wrapper">
           <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="{{ i.image }}" alt=""/>
         </div>
-        <div class="hs__item__description"><span class="hs__item__title" style="color: white">{{ i.name }}</span><span class="hs__item__subtitle">{{ i.artist_name }}</span></div>
-        <a href="{% url 'play' i.uri %}" type="button">Play</a>
+        <div class="hs__item__description"><span class="hs__item__title" style="color: white">{{ i.name }}</span><span class="hs__item__subtitle">{{ i.type }}</span></div>
+        <span><a href="{% url 'play' i.uri %}" type="button">Play</a>
+            <a href="{% url 'pause'  %}" type="button">Pause</a></span>
       {% endfor %}
       </li>
     </ul>
@@ -294,7 +295,8 @@ ul {
           <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="{{ x.image }}" alt=""/>
         </div>
         <div class="hs__item__description"><span class="hs__item__title"></span><span class="hs__item__subtitle">{{ x.name }}</span></div>
-             <a href="{% url 'play' x.uri %}" type="button">Play</a>
+            <span><a href="{% url 'play' x.uri %}" type="button">Play</a>
+         <a href="{% url 'pause'  %}" type="button">Pause</a></span>
           {% endfor %}
       </li>
     </ul>
@@ -312,7 +314,8 @@ ul {
           <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="{{ y.image }}" alt=""/>
         </div>
         <div class="hs__item__description"><span class="hs__item__title"></span><span class="hs__item__subtitle">{{ y.name }}</span></div>
-       <a href="{% url 'play' y.uri %}" type="button">Play</a>
+       <span><a href="{% url 'play' y.uri %}" type="button">Play</a>
+      <a href="{% url 'pause'  %}" type="button">Pause</a></span>
       </li>
      {% endfor %}
     </ul>

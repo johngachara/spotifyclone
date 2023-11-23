@@ -589,7 +589,7 @@ body {
         <div class="hs__item__image__wrapper">
           <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="{{ i.pic }}" alt=""/>
         </div>
-        <div class="hs__item__description"><span class="hs__item__title">{{ i.name }}</span><span class="hs__item__subtitle">View</span></div>
+        <div class="hs__item__description"><span class="hs__item__title">{{ i.name }}</span><span class="hs__item__subtitle"><a href="{% url 'saved_playlists' i.playlist_id %}">View</a> </span></div>
       {% endfor %}
       </li>
     </ul>
@@ -616,13 +616,7 @@ body {
 </div>
     </section>
 
-<footer class="footer">
-  <div class="now-playing"><img class="album__image" src="https://images.unsplash.com/photo-1515233451477-90d9cd4d57ed?ixlib=rb-0.3.5&amp;q=85&amp;fm=jpg&amp;crop=entropy&amp;cs=srgb&amp;ixid=eyJhcHBfaWQiOjE0NTg5fQ&amp;s=cade564aeff757d648625aaac06e837c"/>
-    <div class="album__info"><span class="album__title">Stay There Now</span><span class="album__musician">The Harmonics</span></div>
-  </div>
-  <div class="play-controls"><i class="fas fa-fast-backward"></i><i class="far fa-play-circle"></i><i class="fas fa-fast-forward"></i></div>
-  <div class="play-device-controls"><i class="fas fa-volume-up"></i></div>
-</footer>
+
   </main>
 </div>
 </html>
