@@ -3,8 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Title</title>
+
+    <style>
+        body {
+  margin: auto;
+  font-family: 'Varela Round', sans-serif;
+  font-weight: bold;
+  background-color: #212121;
+}
+
+.header {
+  padding: 0 1.5rem;
+  background-color: #121212;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.spotifylogo{
+  margin: 0 1.5rem;
+  font-size: 3rem;
+  color: #1db954;
+}
+
+ul{
+  list-style-type: none;
+  display:flex;
+  margin: auto 0;
+}
+
+a{
+  text-decoration: none;
+  color: #b3b3b3;
+  margin-left: 1rem;
+  padding: 1rem 1rem;
+  border-radius: 3rem;
+  border-bottom: 1px solid #1db954;
+}
+
+a.btnsignup {
+  color: #121212;
+  background-color: #1db954;
+  padding: 1rem 2rem;
+  border: 1px solid #1db954;
+  transition: background-color 2s;
+}
+
+a.btnsignup:hover {
+  text-decoration: none;
+  background-color: #121212;
+  color: #1db954;
+  border: 1px solid #1db954;
+  transition: color 0.2s ease-in-out;
+  transition: background-color 0.3s ease-out;
+}
+
+a.btnmenu:hover {
+  text-decoration: none;
+  color: #1db954;
+}
+    </style>
+    <title>Spotify Clone</title>
 </head>
+
+<div class="header"style="background-color: black">
+  <nav>
+    <ul>
+      <a class="btnmenu" href= "{% url 'home' %}"style="color: whitesmoke"><li>Home</li></a>
+      <a class="btnmenu" href= "#" style="color: whitesmoke"><li>Search</li></a>
+      <a class="btnmenu" href= "{% url 'saved' %}" style="color: whitesmoke"><li>Downloads</li></a>
+    </ul>
+  </nav>
+</div>
+
 <div class="bg-black min-h-screen text-gray-300 p-8">
 
   <!-- header section -->
@@ -15,12 +86,10 @@
     <!--  content  -->
     <div class="flex flex-col justify-center">
       <h4 class="mt-0 mb-3 text-xs text-gray-400 tracking-widest uppercase">Playlist</h4>
-      <h1 class="mt-0 mb-3 text-white">Middle Child Radio</h1>
+      <h1 class="mt-0 mb-3 text-white"></h1>
+
       <p class="text-gray-500 text-xs mb-2">
-        With J. Cole, Miguel, 6LACK, Future and more
-      </p>
-      <p class="text-gray-500 text-xs">
-        Created by <a>Spotify</a> · 50 songs, 2 hr 54 min
+       By Spotify
       </p>
     </div>
   </div>

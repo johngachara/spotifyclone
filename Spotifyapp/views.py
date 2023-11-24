@@ -203,11 +203,12 @@ def playlist_page(request,playlist_id):
         album = track.get('album','')
         images = album.get('images','')[0]
         url = images.get('url','')
-        name = album.get('name','')
+        name = track.get('name','')
+        name2 = album.get('name','')
         uri = album.get('uri','')
         artist = album.get('artists','')[0]
         artist_name = artist.get('name','')
-        tracks.append({"name":name,"uri":uri,"artist_name":artist_name})
+        tracks.append({"name":name,"uri":uri,"artist_name":artist_name,"album":name2})
     return render(request,'albums.html',{"data":tracks,"uri": uri})
 def pause_song(request):
     pause_url = 'https://api.spotify.com/v1/me/player/pause'
@@ -224,8 +225,43 @@ def pause_song(request):
         messages.error(request,"No device / song Playing")
         return redirect('redi')
 
-def currently_playing(request):
-    currently_playing_url = 'https://api.spotify.com/v1/me/player/currently-playing'
+
+
+def skip_to_next(request):
+    skip_url = 'https://api.spotify.com/v1/me/player/next'
+    access_token = request.session.get('access_token')
+    headers = {
+        "Authorization": f"Bearer {access_token}"
+    }
+    params = {"device_id": ""}
+    response = requests.post(skip_url,json=params,headers=headers)
+    if response:
+        redirect_url = reverse('redi')
+        return HttpResponseRedirect(redirect_url)
+    else:
+        messages.error(request,"No device / song Playing")
+        return redirect('redi')
+
+
+def skip_to_previous(request):
+    skip_url = 'https://api.spotify.com/v1/me/player/previous'
+    access_token = request.session.get('access_token')
+    headers = {
+        "Authorization": f"Bearer {access_token}"
+    }
+    params = {"device_id": ""}
+    response = requests.post(skip_url,json=params,headers=headers)
+    if response:
+        redirect_url = reverse('redi')
+        return HttpResponseRedirect(redirect_url)
+    else:
+        messages.error(request,"No device / song Playing")
+        return redirect('redi')
+
+
+
+
+
 
 
 
