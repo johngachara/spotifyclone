@@ -254,7 +254,7 @@ ul {
             });
         });
     </script>
-
+<script src="https://sdk.scdn.co/spotify-player.js"></script>
 </head>
 <body>
 {% include 'alerts.html' %}
@@ -262,9 +262,12 @@ ul {
 {% include 'navbar.html' %}
 
 {% block content %}
-    <script src="https://sdk.scdn.co/spotify-player.js"></script>
-    <script>
-      window.onSpotifyWebPlaybackSDKReady = () => {
+
+
+<!-- Your other HTML content -->
+
+<script>
+window.onSpotifyWebPlaybackSDKReady = () => {
     const token = '{{ access_token }}';
     const player = new Spotify.Player({
         name: 'Gachara Spotify',
@@ -274,7 +277,6 @@ ul {
         volume: 0.5
     });
 
-
     player.addListener('ready', ({ device_id }) => {
         console.log('Ready with Device ID', device_id);
     });
@@ -283,23 +285,10 @@ ul {
     player.addListener('not_ready', ({ device_id }) => {
         console.log('Device ID has gone offline', device_id);
     });
-      player.addListener('initialization_error', ({ message }) => {
-      console.error(message);
-  });
-
-  player.addListener('authentication_error', ({ message }) => {
-      console.error(message);
-  });
-
-  player.addListener('account_error', ({ message }) => {
-      console.error(message);
-  });
-    player.connect();
-
+    player.connect()
 }
 
-
-    </script>
+</script>
      <header class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4">
     <div class="col-md-4 d-flex justify-content-between align-items-center">
       <span class="mb-3 mb-md-0 text-body-secondary"><a href="https://github.com/johngachara/spotifyclone" target="_blank">View project in github</a> </span>
