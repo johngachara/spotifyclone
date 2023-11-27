@@ -1,20 +1,42 @@
-Spotify clone Django App Documentation
+Spotify Clone Django App Documentation
 1. Introduction
-Welcome to the Spotify Django App documentation! This app allows users to interact with the Spotify API, fetching and displaying information about recently played tracks, saved playlists, albums, and more.
+
+Welcome to the Spotify Clone Django App documentation! This app allows users to interact with the Spotify API, fetching and displaying information about recently played tracks, saved playlists, albums, and more.
+This is my emobilis web development bootcamp finals project
 
 2. Dependencies
 This app relies on the following dependencies:
 
 Django
+
 Requests
+
 Base64
+
 Make sure these are installed in your Django environment.
 
-3. Configuration
+3. Cloning the Project
+To get started, clone the project from the GitHub repository:
+
+git clone https://github.com/johngachara/spotifyclone.git
+
+4. Configuration
 Spotify API Credentials
+
 Obtain your Spotify API credentials (client_id and client_secret) and update the client_id and client_secret variables in your views.py file.
 
-4. Authorization
+You must be a spotify premium user in order for this application to work.
+
+6. Installing Requirements
+
+Navigate to the project directory and install the required dependencies:
+
+cd spotifyclone
+
+pip install -r requirements.txt
+
+6. Authorization
+
 Index View
 The index view initiates the Spotify authorization flow, redirecting users to Spotify for authentication.
 
@@ -39,9 +61,9 @@ The pause_song, skip_to_next, and skip_to_previous views control Spotify playbac
 Search View
 The search_view allows users to search for tracks, albums, artists, and playlists.
 
-5. Error Handling
+7. Error Handling
 The app handles errors gracefully, providing appropriate messages to users in case of issues with Spotify API requests or other errors.
 
-6. Conclusion
-Thank you for using the Spotify Django App! If you have any questions, feedback, or suggestions, feel free to reach out.
+8. Conclusion
+Thank you for using the Spotify Clone Django App! If you have any questions, feedback, or suggestions, feel free to reach out.
 
