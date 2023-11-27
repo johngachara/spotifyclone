@@ -64,6 +64,11 @@ The search_view allows users to search for tracks, albums, artists, and playlist
 7. Error Handling
 The app handles errors gracefully, providing appropriate messages to users in case of issues with Spotify API requests or other errors.
 
-8. Conclusion
-Thank you for using the Spotify Clone Django App! If you have any questions, feedback, or suggestions, feel free to reach out.
+9.The Spotify Web Playback SDK is utilized in the app to control playback on Spotify directly from a web browser. This SDK allows the app to interact with the Spotify player, enabling features like playing, pausing, and skipping tracks.
 
+In 'red.html'  template, ive include a script that initializes the Spotify Web Playback SDK. This script sets up a new player instance, provides the necessary access token for authentication, and defines callbacks for when the player is ready or not ready.
+
+Essentially, the Spotify Web Playback SDK facilitates seamless integration between the Django app and the Spotify player, enabling users to control their Spotify playback experience directly from your web application.
+
+For the app to function you must be using spotify on a device and it must be active.
+For a device using spotify to be termed as active it must be playing some music otherwise error messages will be displayed with corresponding info.
