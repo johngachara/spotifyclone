@@ -291,7 +291,7 @@ window.onSpotifyWebPlaybackSDKReady = () => {
 </script>
      <header class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4">
     <div class="col-md-4 d-flex justify-content-between align-items-center">
-      <span class="mb-3 mb-md-0 text-body-secondary"><a href="https://github.com/johngachara/spotifyclone" target="_blank">View project in github</a> </span>
+      <span class="mb-3 mb-md-0 text-body-secondary"><a href="https://github.com/johngachara/spotifyclone" target="_blank">View documentation</a> </span>
     </div>
 
     <ul class="nav col-md-4  list-unstyled d-flex">
@@ -314,7 +314,7 @@ window.onSpotifyWebPlaybackSDKReady = () => {
         <div class="hs__item__image__wrapper">
           <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="{{ i.image }}" alt=""/>
         </div>
-        <div class="hs__item__description"><span class="hs__item__title" style="color: white">{{ i.name }}</span><span class="hs__item__subtitle">{{ i.type }}</span></div>
+        <div class="hs__item__description"><span class="hs__item__title" style="color: white">{{ i.name }}</span><span class="hs__item__subtitle">{{ i.artist_name }}</span></div>
         <a href="{% url 'play' i.uri %}" type="button">Play</a>
 
       {% endfor %}

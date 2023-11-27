@@ -148,13 +148,17 @@ def savedpage(request):
     response2 = requests.get(saved_albums_url,params={"limit":20},headers=headers).json()
     items2 = response2.get('items',[])
     saved_albums = []
+    uri_dict = []
     for i in items2:
         album = i.get('album','')
         image = album.get('images','')[0]
         spotify_id = album.get('id','')
         url = image.get('url','')
         album_name = album.get('name','')
+        album_uri = album.get('uri','')
+        uri_dict.append({"uri":album_uri})
         saved_albums.append({"image":url,"name":album_name,"spotify_id":spotify_id})
+    request.session['url_dict']=uri_dict
 
 
     return render(request,'saved.html',{"data":saved_items,"saved_albums":saved_albums})
@@ -179,7 +183,7 @@ def album_page(request,spotify_id):
     headers = {
         "Authorization": f"Bearer {access_token}"
     }
-    response = requests.get(track_url,params={"limit":20},headers=headers).json()
+    response = requests.get(track_url,params={"limit":40},headers=headers).json()
     items = response.get('items',[])
     albums = []
     for i in items:
@@ -262,7 +266,7 @@ def search_view(request):
     if 'searchform' in request.POST:
         searching = request.POST['searchform']
     else:
-        searching = 'top 10 kenya'
+        searching = 'jah jah dont leave me'
 
     search_url = 'https://api.spotify.com/v1/search'
     access_token = request.session.get('access_token')
@@ -279,9 +283,11 @@ def search_view(request):
         name = item.get('name','')
         album_items = item.get('album','')
         uri = album_items.get('uri','')
+        artist = album_items.get('artists','')[0]
+        artist_name = artist.get('name','')
         image = album_items.get('images','')[0]
         url = image.get('url','')
-        tracks_dict.append({"name":name,"image":url,"uri":uri})
+        tracks_dict.append({"name":name,"image":url,"uri":uri,"artist_name":artist_name})
     return render(request,'search.html',{"data":tracks_dict})
 
 

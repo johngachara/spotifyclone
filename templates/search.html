@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Spotify Clone</title>
     <style>
 /* Header and nav */
 .header {
@@ -302,7 +302,7 @@ body {
   overflow-x: hidden;
   font-family: "Muli", sans-serif;
   color: white;
-  background: white;
+  background: black;
   line-height: 1.5;
   letter-spacing: 0.15px;
 }
@@ -476,6 +476,7 @@ ul {
         });
     </script>
 </head>
+<body>
   <div class="container">
       <header class="header">
       <div class="search-pages-nav">
@@ -507,14 +508,16 @@ ul {
         <div class="hs__item__image__wrapper">
           <!--img.hs__item__image(src="https://source.unsplash.com/random/300×300/?album&sig"+[n]+[i], alt="")--><img class="hs__item__image" src="{{ i.image }}" alt=""/>
         </div>
-        <div class="hs__item__description"><span class="hs__item__title" style="color: white"></span><span class="hs__item__subtitle">{{ i.name }}</span></div>
-    <a href="{% url 'play' i.uri %}" type="button">Play</a>
-    <a href="#">Home</a>
+        <div class="hs__item__description"><span class="hs__item__title" style="color: white">{{ i.artist_name }}</span><span class="hs__item__subtitle">{{ i.name }}</span></div>
+    <a href="{% url 'play' i.uri %}" type="button" style="text-decoration: none;color: green">Play</a>
+
 
 {% endfor %}
 
       </li>
     </ul>
   </div>
+  <a href="{% url 'redi' %}"style="text-decoration: none;color: whitesmoke;">Go Home</a>
   </div>
+</body>
 </html>
