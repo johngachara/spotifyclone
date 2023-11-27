@@ -143,12 +143,12 @@ def savedpage(request):
         name = item.get('name','')
         pic = item.get('images', [{}])[0].get('url', '')
         playlist_id = item.get('id','')
-        saved_items.append({"name":name,"descr":descr,"pic":pic,"playlist_id":playlist_id})
+        uri = item.get('uri','')
+        saved_items.append({"name":name,"descr":descr,"pic":pic,"playlist_id":playlist_id,"uri":uri})
     saved_albums_url = 'https://api.spotify.com/v1/me/albums'
     response2 = requests.get(saved_albums_url,params={"limit":20},headers=headers).json()
     items2 = response2.get('items',[])
     saved_albums = []
-    uri_dict = []
     for i in items2:
         album = i.get('album','')
         image = album.get('images','')[0]
@@ -156,9 +156,8 @@ def savedpage(request):
         url = image.get('url','')
         album_name = album.get('name','')
         album_uri = album.get('uri','')
-        uri_dict.append({"uri":album_uri})
-        saved_albums.append({"image":url,"name":album_name,"spotify_id":spotify_id})
-    request.session['url_dict']=uri_dict
+        saved_albums.append({"image":url,"name":album_name,"spotify_id":spotify_id,"uri":album_uri})
+
 
 
     return render(request,'saved.html',{"data":saved_items,"saved_albums":saved_albums})
@@ -289,6 +288,5 @@ def search_view(request):
         url = image.get('url','')
         tracks_dict.append({"name":name,"image":url,"uri":uri,"artist_name":artist_name})
     return render(request,'search.html',{"data":tracks_dict})
-
 
 
