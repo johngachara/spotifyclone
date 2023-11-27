@@ -258,11 +258,31 @@ def skip_to_previous(request):
         messages.error(request,"No device / song Playing")
         return redirect('redi')
 
+def search_view(request):
+    if 'searchform' in request.POST:
+        searching = request.POST['searchform']
+    else:
+        searching = 'top 10 kenya'
 
-
-
-
-
+    search_url = 'https://api.spotify.com/v1/search'
+    access_token = request.session.get('access_token')
+    headers = {
+        "Authorization": f"Bearer {access_token}"
+    }
+    params = {"q": searching, "type": ['track', 'album', 'artist', 'playlist'], "limit": 20,
+              "include_external": "audio"}
+    response = requests.get(search_url, headers=headers, params=params).json()
+    tracks = response.get('tracks','')
+    album = tracks.get('items',[])
+    tracks_dict = []
+    for item in album:
+        name = item.get('name','')
+        album_items = item.get('album','')
+        uri = album_items.get('uri','')
+        image = album_items.get('images','')[0]
+        url = image.get('url','')
+        tracks_dict.append({"name":name,"image":url,"uri":uri})
+    return render(request,'search.html',{"data":tracks_dict})
 
 
 

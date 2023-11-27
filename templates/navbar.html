@@ -69,8 +69,8 @@ a.btnmenu:hover {
   </div>
   <nav>
     <ul>
-      <a class="btnmenu" href= "#"><li>Home</li></a>
-      <a class="btnmenu" href= "#"><li>Search</li></a>
+      <a class="btnmenu" href= "{% url 'redi' %}"><li>Home</li></a>
+      <a class="btnmenu" href= "{% url 'search_view' %}"><li>Search</li></a>
       <a class="btnmenu" href= "{% url 'saved' %}"><li>Downloads</li></a>
     </ul>
   </nav>

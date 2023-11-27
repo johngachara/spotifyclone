@@ -11,6 +11,7 @@ urlpatterns = [
     path('dowloads/<str:playlist_id>',views.playlist_page,name='saved_playlists'),
     path('pause/',views.pause_song,name='pause'),
     path('skip/',views.skip_to_next,name='skip'),
-    path('previous/',views.skip_to_previous,name='previous')
+    path('previous/',views.skip_to_previous,name='previous'),
+    path('searchview/',views.search_view,name='search_view'),
 
 ]
